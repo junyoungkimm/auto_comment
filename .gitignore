@@ -3,7 +3,7 @@ __pycache__/
 .venv/
 *.egg-info/
 
-# 비밀 값 — 절대 커밋하지 않는다 (과제 체크리스트 항목)
+# 비밀 값 — 절대 커밋하지 않는다
 .env
 secrets/*
 !secrets/.gitkeep

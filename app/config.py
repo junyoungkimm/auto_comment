@@ -14,7 +14,6 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 @dataclass(frozen=True)
 class Settings:
     youtube_api_key: str = ""
-    anthropic_api_key: str = ""
 
     channels: tuple[str, ...] = ()   # @핸들 또는 UC... 채널 ID
 
@@ -25,7 +24,6 @@ class Settings:
     # 주 모델이 과부하(503)거나 응답이 없을 때 쓸 대체 모델
     # 쉼표로 여러 개. 앞에서부터 차례로 시도한다
     gemini_fallback_model: str = "gemini-2.5-flash,gemini-3.5-flash-lite"
-    model: str = "claude-opus-5"
     # 자막을 못 받으면 제미나이가 유튜브 영상을 직접 보게 한다
     gemini_watch_video: bool = True
 
@@ -47,7 +45,7 @@ class Settings:
 
     @property
     def effective_provider(self) -> str:
-        """키가 없으면 demo 로 내려간다. 심사자가 키 없이도 화면을 볼 수 있게."""
+        """키가 없으면 demo 로 내려간다. 키 없이도 화면을 볼 수 있게."""
         if self.ai_provider == "gemini" and not self.gemini_api_key:
             return "demo"
         return self.ai_provider
@@ -86,7 +84,6 @@ def load_settings() -> Settings:
     profiles = tuple(p.strip() for p in profiles_raw.split(",") if p.strip())
     return Settings(
         youtube_api_key=_env_str("YOUTUBE_API_KEY", ""),
-        anthropic_api_key=_env_str("ANTHROPIC_API_KEY", ""),
         channels=channels,
         ai_provider=_env_str("AGENT_AI_PROVIDER", Settings.ai_provider).lower(),
         gemini_api_key=_env_str("GEMINI_API_KEY", ""),
@@ -94,7 +91,6 @@ def load_settings() -> Settings:
         gemini_fallback_model=_env_str(
             "AGENT_GEMINI_FALLBACK", Settings.gemini_fallback_model
         ),
-        model=_env_str("AGENT_MODEL", Settings.model),
         gemini_watch_video=_env_bool("AGENT_GEMINI_WATCH_VIDEO", Settings.gemini_watch_video),
         min_chars=_env_int("AGENT_MIN_CHARS", Settings.min_chars),
         max_chars=_env_int("AGENT_MAX_CHARS", Settings.max_chars),

@@ -78,7 +78,7 @@ function renderTally(done, max) {
 
 // ---------- 상태 ----------
 
-// 계정 고르기 또는 자동 배정 (가점). 게시 방식에 따라 필요한 준비물이 달라서
+// 계정 고르기 또는 자동 배정. 게시 방식에 따라 필요한 준비물이 달라서
 // (자동 입력 게시 → 크롬 프로필, API → 인증 토큰) 방식이 바뀔 때마다 다시 그린다.
 function profileReady(p, method) {
   return method === "api" ? p.has_token : p.has_browser;
@@ -151,7 +151,7 @@ function renderVideos(all) {
     if (v.rising) flags.push(
       `<span class="flag flag--rising" title="${escapeHtml(risingTip)}">뜨는 중 · 시간당 ${nf.format(Math.round(v.views_per_hour))}회</span>`);
     if (v.commented) flags.push(`<span class="flag flag--done">작성함</span>`);
-    if (v.draft_only) flags.push(`<span class="flag flag--off" title="과제 기준: 뜨기 직전 영상은 초안까지만">초안 전용</span>`);
+    if (v.draft_only) flags.push(`<span class="flag flag--off" title="기준: 뜨기 직전 영상은 초안까지만">초안 전용</span>`);
     if (!v.on_topic) flags.push(`<span class="flag flag--off">${escapeHtml(v.topic_label)}</span>`);
     return `
       <button class="row${v.on_topic ? "" : " row--off"}" role="option" aria-selected="${v.video_id === state.selected?.video_id}" data-id="${v.video_id}">
@@ -212,7 +212,7 @@ async function refreshVideos() {
   }
 }
 
-// 가점: '연애' 키워드로 뜨기 직전 영상 찾기 (유튜브 전체 검색, 초안까지만)
+// '연애' 키워드로 뜨기 직전 영상 찾기 (유튜브 전체 검색, 초안까지만)
 async function findRising() {
   const btn = $("btnRising");
   btn.disabled = true;
@@ -247,7 +247,7 @@ function postBlockReason(video) {
     return `오늘 게시 상한에 도달했습니다 (${posted_today}/${daily_max}) — 내일 다시 게시할 수 있습니다`;
   }
   if (video.commented) return "이 영상에는 이미 댓글을 달았습니다 (영상당 1개)";
-  if (video.draft_only) return "키워드 검색으로 찾은 영상은 초안까지만 만듭니다 (과제 기준)";
+  if (video.draft_only) return "키워드 검색으로 찾은 영상은 초안까지만 만듭니다";
   if (state.draftOk === false) return "초안이 규칙을 어겼습니다. STEP 2의 ✕ 항목을 고쳐주세요";
   return "";
 }

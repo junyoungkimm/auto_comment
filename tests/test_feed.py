@@ -30,7 +30,7 @@ def test_parse_feed_extracts_required_fields():
 
     assert len(videos) == 15  # 유튜브 RSS는 채널당 최신 15개
     v = videos[0]
-    # 과제 ①이 요구하는 네 가지가 모두 있어야 한다
+    # 영상 목록에 필요한 네 가지가 모두 있어야 한다
     assert v.title
     assert v.channel
     assert v.thumbnail.startswith("https://")
@@ -62,7 +62,7 @@ def test_views_per_hour_does_not_divide_by_zero():
     assert v.views_per_hour > 0  # 방금 올라온 영상
 
 
-# --- 뜨기 직전 영상 (가점 항목) ---
+# --- 뜨기 직전 영상 ---
 
 def test_find_rising_applies_both_conditions():
     videos = [
@@ -89,12 +89,12 @@ def test_find_rising_sorts_by_speed():
 
 
 def test_find_rising_boundaries_are_inclusive():
-    """과제 기준이 '1,000 ~ 5,000 · 시간당 150 이상' 이므로 경계를 포함한다."""
+    """기준이 '1,000 ~ 5,000 · 시간당 150 이상' 이므로 경계를 포함한다."""
     exact = make_video(views=1500, age_hours=10)  # 1500뷰, 150/h
     assert find_rising([exact]) == [exact]
 
 
-# --- 링크 직접 입력 (가점 항목) ---
+# --- 링크 직접 입력 ---
 
 @pytest.mark.parametrize(
     "value",

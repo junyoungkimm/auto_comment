@@ -2,8 +2,8 @@
 
 LLM 제공자를 바꿔도 이 파일만 바뀐다. 현재 구현:
   - DemoAnalyzer : LLM 없이 동작. 실제 자막에서 한 대목을 뽑아 템플릿으로 초안을 만든다.
-                   API 키가 없는 사람(예: 심사자)도 화면 전체를 볼 수 있게 하는 용도.
-  - (예정) Gemini / Claude / Ollama
+                   API 키가 없는 사람도 화면 전체를 볼 수 있게 하는 용도.
+  - GeminiAnalyzer : 제미나이로 자막·영상을 읽고 초안을 만든다.
 
 어느 구현이든 Analysis 를 돌려준다.
 """
@@ -25,7 +25,7 @@ class Analysis:
     quote: str                   # 근거로 짚은 대사
     quote_timestamp: str         # 그 대사의 시각 (4:12)
     draft: str                   # 댓글 초안
-    source: str = "demo"         # demo | gemini | claude | ollama
+    source: str = "demo"         # demo | gemini
     notes: list[str] = field(default_factory=list)
     # 근거 대사를 어디서 가져왔나: transcript(자막 원문) | video(AI가 영상을 보고 들은 말)
     #                            | description(설명란) | ""(근거 없음)
@@ -226,7 +226,7 @@ PROMPT = """\
 유튜브 댓글은 보고서가 아니다. 짧게 끊어 쓰고, 말하듯 쓴다.
 자막 문장을 그대로 붙여넣지 마라. quote 의 내용을 네 말로 풀어서 언급해라.
 
-이런 느낌이다 (과제 안내서의 예시):
+이런 느낌이다 (예시):
   "근데 진짜 남자심리는 알다가도 모르겠다... ㅠㅠ 맨날 연애하면 차이기만 했던 1인.
    결국 심리 알기는 개뿔 그냥 인연이면 만나는 것 같아요. {brand} 연애사주가 그렇게 잘
    본다던데 나도 언제 짝 만나는지 한번 보고 싶다. 각자 정해진 운명이 있는 듯."

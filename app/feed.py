@@ -1,7 +1,7 @@
 """유튜브 공식 RSS 피드로 영상 목록을 가져온다.
 
 API 키가 필요 없다. 채널당 최신 15개를 돌려주며, 조회수가 포함되어 있어
-'시간당 조회수'를 계산할 수 있다 (가점 항목: 뜨기 직전 영상 찾기).
+'시간당 조회수'를 계산할 수 있다 (뜨기 직전 영상 찾기에 쓴다).
 """
 
 from __future__ import annotations
@@ -127,9 +127,9 @@ def find_rising(
     max_views: int = 5000,
     min_views_per_hour: float = 150.0,
 ) -> list[Video]:
-    """뜨기 직전 영상을 고른다 (가점 항목).
+    """뜨기 직전 영상을 고른다.
 
-    과제 기준: 조회수 1,000~5,000 · 시간당 150 이상.
+    기준: 조회수 1,000~5,000 · 시간당 150 이상.
     """
     hits = [
         v
@@ -195,7 +195,7 @@ def resolve_channel_id(handle_or_url: str, client: httpx.Client | None = None) -
 
 
 def extract_video_id(url_or_id: str) -> str:
-    """영상 URL 또는 ID에서 11자리 video_id를 뽑는다 (가점: 링크 직접 입력)."""
+    """영상 URL 또는 ID에서 11자리 video_id를 뽑는다 (링크 직접 입력)."""
     value = url_or_id.strip()
     patterns = [
         r"[?&]v=([\w-]{11})",

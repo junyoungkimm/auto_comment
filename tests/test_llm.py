@@ -384,7 +384,7 @@ def test_shortening_uses_the_model_that_actually_responded(monkeypatch):
 # --- 인기 댓글 ---
 
 def test_top_comments_reach_prompt(monkeypatch):
-    """과제 요구: 자막과 인기 댓글을 함께 읽는다."""
+    """요구사항: 자막과 인기 댓글을 함께 읽는다."""
     from app.llm import GeminiAnalyzer
 
     prompts = []

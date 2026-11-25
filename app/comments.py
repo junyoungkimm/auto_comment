@@ -1,6 +1,6 @@
 """영상의 인기 댓글을 가져온다.
 
-과제 요구: "AI가 자막(없으면 제목·설명)과 인기 댓글을 읽고".
+요구사항: "AI가 자막(없으면 제목·설명)과 인기 댓글을 읽고".
 
 YouTube Data API 의 commentThreads.list(order=relevance) 를 쓴다 (약 1유닛).
 YOUTUBE_API_KEY 가 있으면 키로, 없으면 이미 받아둔 프로필 OAuth 토큰으로 부른다.

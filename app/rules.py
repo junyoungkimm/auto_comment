@@ -1,6 +1,6 @@
-"""댓글 검증과 게시 제한. 과제 요구: "운영 규칙 — 코드에서 강제".
+"""댓글 검증과 게시 제한. 요구사항: "운영 규칙 — 코드에서 강제".
 
-과제 명시 규칙
+지켜야 할 규칙
   - 40~120자
   - 금지: 링크 · 해시태그 · 운명원을 직접 이용해 본 것처럼 지어낸 후기
   - 영상당 댓글 1개
@@ -24,7 +24,7 @@ LINK_PATTERNS = [
 ]
 HASHTAG_PATTERN = re.compile(r"(?:^|\s)#\S+")
 
-# "운명원에 가봤다 / 봐봤다" 류의 직접 경험 서술 (과제 금지 항목)
+# "운명원에 가봤다 / 봐봤다" 류의 직접 경험 서술 (금지 항목)
 EXPERIENCE_PATTERNS = [
     re.compile(p) for p in [
         r"(가|받아|보|봐|써|이용해)\s*(봤|밨)",
@@ -84,15 +84,15 @@ def validate_comment(
 
     # 링크 금지
     if any(p.search(body) for p in LINK_PATTERNS):
-        v.errors.append("링크가 포함되어 있습니다 (과제 금지 항목)")
+        v.errors.append("링크가 포함되어 있습니다 (금지 항목)")
 
     # 해시태그 금지
     if HASHTAG_PATTERN.search(body):
-        v.errors.append("해시태그가 포함되어 있습니다 (과제 금지 항목)")
+        v.errors.append("해시태그가 포함되어 있습니다 (금지 항목)")
 
     # 지어낸 후기 금지
     if _has_experience_claim(body, brand):
-        v.errors.append(f"'{brand}'를 직접 이용해 본 것처럼 쓰여 있습니다 (과제 금지 항목)")
+        v.errors.append(f"'{brand}'를 직접 이용해 본 것처럼 쓰여 있습니다 (금지 항목)")
 
     # 광고 표기
     if require_disclosure and not any(m in body for m in DISCLOSURE_MARKERS):

@@ -15,7 +15,7 @@ from googleapiclient.errors import HttpError
 from app.google_auth import build_service, whoami
 
 WATCH_URL = "https://www.youtube.com/watch?v={video_id}"
-# hl=ko: 과제 요구 "유튜브 한국어 화면에서 작동". 계정 언어 설정과 무관하게 한국어로 연다.
+# hl=ko: 유튜브 한국어 화면에서 작동하도록. 계정 언어 설정과 무관하게 한국어로 연다.
 COMMENT_URL = "https://www.youtube.com/watch?v={video_id}&lc={comment_id}&hl=ko"
 
 
@@ -103,7 +103,7 @@ def post_comment(profile: str, video_id: str, text: str) -> PostResult:
 def verify_comment(profile: str, comment_id: str) -> bool:
     """게시된 댓글이 실제로 조회되는지 확인한다.
 
-    과제 요구의 "내 댓글이 보이는지 확인" 단계를 코드로 수행한다.
+    "내 댓글이 보이는지 확인" 단계를 코드로 수행한다.
     """
     service = build_service(profile)
     try:

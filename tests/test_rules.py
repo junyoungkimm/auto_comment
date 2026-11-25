@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""운영 규칙 테스트 (과제 배점 15점 항목)."""
+"""운영 규칙 테스트."""
 
 import pytest
 
@@ -40,7 +40,7 @@ def test_length_boundaries_are_inclusive():
     assert v(exact_40).ok
 
 
-# --- 과제 금지 항목 ---
+# --- 금지 항목 ---
 
 @pytest.mark.parametrize(
     "bad",

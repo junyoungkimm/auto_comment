@@ -1,7 +1,7 @@
 """전용 크롬 프로필 창을 연다.
 
-과제 안내서가 명시한 방식:
-  "프로필 폴더를 지정해 여는 방식(예: Playwright launchPersistentContext, --user-data-dir)"
+연결 방식:
+  프로필 폴더를 지정해 연다 (Playwright launchPersistentContext 또는 --user-data-dir).
 
 여기서는 --user-data-dir 쪽을 쓴다. 게시는 공식 API 가 하고 이 창은 화면 확인용이라
 DOM 조작이 필요 없어서, 브라우저 수명 관리가 없는 쪽이 훨씬 안정적이다.

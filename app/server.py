@@ -65,7 +65,7 @@ _videos: dict[str, Video] = {}
 _rising_ids: set[str] = set()
 # 링크로 직접 넣은 영상 (RSS 목록에 없으므로 따로 들고 있는다)
 _link_videos: dict[str, dict] = {}
-# '연애' 키워드 검색으로 찾은 영상. 과제 기준이 "초안까지만"이라 게시를 막는다.
+# '연애' 키워드 검색으로 찾은 영상. 기준이 "초안까지만"이라 게시를 막는다.
 _draft_only: set[str] = set()
 
 
@@ -168,7 +168,7 @@ def _validate_text(text: str):
 def _record_failure(video_id: str, video_title: str, profile: str,
                     comment: str, error: str, screenshot: str | None = None,
                     method: str | None = None) -> Record:
-    """실패를 이유 · 화면 캡처와 함께 기록한다 (과제 요구).
+    """실패를 이유 · 화면 캡처와 함께 기록한다.
 
     브라우저 캡처가 이미 있으면 그걸 쓰고, 없으면 화면 전체를 찍는다.
     """
@@ -263,7 +263,7 @@ def refresh_videos():
 
 @app.post("/api/videos/rising")
 def find_rising_videos():
-    """가점 항목: '연애' 키워드로 뜨기 직전 영상 찾기 (유튜브 전체 검색, 초안까지만)."""
+    """'연애' 키워드로 뜨기 직전 영상 찾기 (유튜브 전체 검색, 초안까지만)."""
     found = discover_rising(
         min_views=settings.rising_min_views,
         max_views=settings.rising_max_views,
@@ -294,7 +294,7 @@ class LinkIn(BaseModel):
 
 @app.post("/api/videos/by-link")
 def video_by_link(body: LinkIn):
-    """가점 항목: 링크 직접 입력."""
+    """링크 직접 입력."""
     try:
         video_id = extract_video_id(body.url)
     except ValueError as e:
@@ -456,7 +456,7 @@ def _precheck(body: "PostIn") -> list[str]:
     if body.video_id in _draft_only:
         raise HTTPException(
             status_code=409,
-            detail="키워드 검색으로 찾은 영상은 초안까지만 만듭니다 (과제 기준).",
+            detail="키워드 검색으로 찾은 영상은 초안까지만 만듭니다.",
         )
     # 1) 운영 규칙 — 영상당 1개 · 하루 상한
     gate = activity.gate(settings.daily_max_comments)
@@ -644,7 +644,7 @@ class ConfirmIn(BaseModel):
 def confirm(body: ConfirmIn):
     """게시된 댓글을 프로필 창에서 열어 눈으로 확인한다.
 
-    과제 요구: "게시 → 내 댓글이 보이는지 확인까지 화면에 보이게".
+    요구사항: "게시 → 내 댓글이 보이는지 확인까지 화면에 보이게".
     """
     profile = body.profile or settings.profiles[0]
     try:

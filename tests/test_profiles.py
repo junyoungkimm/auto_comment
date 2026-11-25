@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""계정 배정 (가점: 계정1~3 중 고르기 또는 영상마다 돌아가며 자동 배정)."""
+"""계정 배정 (계정1~3 중 고르기 또는 영상마다 돌아가며 자동 배정)."""
 
 import pytest
 from fastapi.testclient import TestClient
