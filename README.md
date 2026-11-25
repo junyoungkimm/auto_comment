@@ -106,6 +106,7 @@ GEMINI_API_KEY=...
 | `AGENT_RISING_MIN_VIEWS` / `MAX_VIEWS` / `MIN_VPH` | `1000` / `5000` / `150` | 뜨기 직전 영상 기준 |
 | `AGENT_PROFILES` | `계정1,계정2,계정3` | 계정(크롬 프로필) 이름 |
 | `AGENT_CHROME_PATH` | 자동 탐색 | 크롬 실행 파일 |
+| `AGENT_DATA_DIR` | `./data` | 기록·캡처 위치 (테스트용 기록을 실제 기록과 분리할 때) |
 
 ## 구조
 
@@ -142,10 +143,34 @@ scripts/           setup_profile · auth_youtube · warmup · preflight
 
 `.env`, `secrets/`, `profiles/`(로그인 세션), `data/`(기록·캡처)는 git에서 제외되어 있습니다.
 
-## 쓴 것
+## 사용한 오픈소스
 
-- [FastAPI](https://fastapi.tiangolo.com/) · [httpx](https://www.python-httpx.org/) · [Playwright](https://playwright.dev/)
-- [google-api-python-client](https://github.com/googleapis/google-api-python-client) — YouTube Data API
-- [youtube-transcript-api](https://github.com/jdepoix/youtube-transcript-api) — 자막 수집
-- [Gemini API](https://ai.google.dev/) — 영상 분석 · 초안 (유튜브 영상 직접 입력 포함)
-- [IBM Plex Sans KR / Mono](https://fonts.google.com/specimen/IBM+Plex+Sans+KR) — 화면 글꼴
+코드를 복사해 온 것은 없고, 아래 라이브러리를 의존성으로 설치해 사용합니다. 각 라이선스를 따릅니다.
+
+| 오픈소스 | 버전(개발 시) | 라이선스 | 쓰는 곳 |
+|---|---|---|---|
+| [FastAPI](https://github.com/fastapi/fastapi) | 0.165 | MIT | 로컬 대시보드 서버 |
+| [Uvicorn](https://github.com/encode/uvicorn) | 0.54 | BSD-3-Clause | 서버 실행 |
+| [Pydantic](https://github.com/pydantic/pydantic) | 2.14 | MIT | 요청 데이터 검증 |
+| [HTTPX](https://github.com/encode/httpx) | 0.28 | BSD-3-Clause | RSS · oEmbed · Gemini · Data API 호출 |
+| [python-dotenv](https://github.com/theskumar/python-dotenv) | 1.2 | BSD-3-Clause | `.env` 설정 읽기 |
+| [Playwright for Python](https://github.com/microsoft/playwright-python) | 1.65 | Apache-2.0 | 계정 크롬 창 열기 · 한 글자씩 입력 · 게시 확인 |
+| [youtube-transcript-api](https://github.com/jdepoix/youtube-transcript-api) | 1.2 | MIT | 자막 수집 |
+| [google-api-python-client](https://github.com/googleapis/google-api-python-client) | 2.202 | Apache-2.0 | YouTube Data API (게시 · 인기 댓글 · 검색) |
+| [google-auth](https://github.com/googleapis/google-auth-library-python) · [google-auth-oauthlib](https://github.com/googleapis/google-auth-library-python-oauthlib) · [google-auth-httplib2](https://github.com/googleapis/google-auth-library-python-httplib2) | 2.63 · 1.5 · 0.4 | Apache-2.0 | OAuth 인증 · 토큰 갱신 |
+| [pytest](https://github.com/pytest-dev/pytest) | 9.2 | MIT | 테스트 |
+| [IBM Plex Sans KR · IBM Plex Mono](https://github.com/IBM/plex) | — | SIL OFL 1.1 | 화면 글꼴 (Google Fonts로 불러옴) |
+
+### 사용한 외부 서비스
+
+오픈소스는 아니지만 아래 공식 서비스를 각 약관에 따라 사용합니다.
+
+| 서비스 | 쓰는 곳 |
+|---|---|
+| [YouTube RSS 피드 · oEmbed](https://www.youtube.com/) | 영상 목록 · 링크 영상 정보 (키 불필요) |
+| [YouTube Data API v3](https://developers.google.com/youtube/v3) | 댓글 게시 · 공개 확인 · 인기 댓글 · '연애' 키워드 검색 |
+| [Gemini API](https://ai.google.dev/) | 영상 분석 · 고민 정리 · 댓글 초안 (유튜브 영상 직접 입력 포함) |
+
+### AI 도구
+
+개발 과정에서 AI 코딩 도구(Claude Code)를 사용했습니다. 과제 안내서상 AI 도구 사용에는 제한이 없습니다.

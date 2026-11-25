@@ -110,4 +110,6 @@ def load_settings() -> Settings:
         ),
         profiles=profiles or Settings.profiles,
         chrome_path=_env_str("AGENT_CHROME_PATH", ""),
+        # 기록·캡처 위치. 시연·테스트용 기록을 실제 기록과 분리할 때 쓴다
+        data_dir=Path(_env_str("AGENT_DATA_DIR", str(Settings.data_dir))),
     )

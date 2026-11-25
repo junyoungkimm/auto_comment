@@ -242,6 +242,10 @@ async function findRising() {
 // 게시 버튼을 막아야 하는 이유. 없으면 빈 문자열.
 function postBlockReason(video) {
   if (!video) return "영상을 고르세요";
+  const { posted_today, daily_max } = state.limits;
+  if (posted_today >= daily_max) {
+    return `오늘 게시 상한에 도달했습니다 (${posted_today}/${daily_max}) — 내일 다시 게시할 수 있습니다`;
+  }
   if (video.commented) return "이 영상에는 이미 댓글을 달았습니다 (영상당 1개)";
   if (video.draft_only) return "키워드 검색으로 찾은 영상은 초안까지만 만듭니다 (과제 기준)";
   if (state.draftOk === false) return "초안이 규칙을 어겼습니다. STEP 2의 ✕ 항목을 고쳐주세요";
@@ -266,6 +270,9 @@ async function selectVideo(videoId) {
   state.selected = video;
   state.opened = false;
   state.draftOk = null;   // 새 영상의 초안 검사 결과가 올 때까지 판단 보류
+  // 상한·영상당 1개처럼 초안과 상관없는 막힘은 분석을 기다리지 않고 바로 알린다
+  const blocked = postBlockReason(video);
+  if (blocked) $("postNote").textContent = blocked;
 
   document.querySelectorAll(".row").forEach((r) => {
     r.setAttribute("aria-selected", String(r.dataset.id === videoId));
