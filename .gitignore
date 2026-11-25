@@ -18,5 +18,5 @@ data/
 # 브라우저 점검 도구가 남기는 캡처
 .playwright-mcp/
 
-# 과제 안내서 (제이지그룹 문서 — 공개 저장소에 올리지 않는다)
+# 외부 참고 문서 (공개 저장소에 올리지 않는다)
 docs/track-2-marketing-agent.pdf
