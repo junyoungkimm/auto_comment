@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>댓글 연상 및 자동화 프로젝트</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg stroke='%23B3001B' stroke-width='2.4' fill='none'%3E%3Cpath d='M3 4H21'/%3E%3Cpath d='M12 4V20'/%3E%3Cpath d='M6 12H12'/%3E%3Cpath d='M6 12V20'/%3E%3Cpath d='M3 20H21'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead__id">
+    <h1>댓글 연상 및 자동화 프로젝트</h1>
+    <p id="brandLine">영상 속 연애 고민을 읽고, 운명원으로 이어지는 댓글을 자동으로 남깁니다.</p>
+  </div>
+
+  <div class="tally" id="tally">
+    <div class="tally__marks" id="tallyMarks"></div>
+    <div class="tally__count"><span id="tallyNum">0</span><span class="tally__of">/10</span></div>
+    <div class="tally__label">오늘 게시</div>
+  </div>
+
+  <div class="masthead__actions">
+    <button id="btnRising" class="btn btn--ghost" title="유튜브 전체에서 '연애' 키워드로 최근 48시간 영상을 찾아, 조회수 1,000~5,000 · 시간당 150회 이상인 영상만 보여줍니다 (초안까지만)">뜨는 연애 영상 찾기</button>
+    <button id="btnRefresh" class="btn btn--primary">영상 불러오기</button>
+    <span class="ai-flag" id="aiFlag" hidden>데모 데이터</span>
+  </div>
+</header>
+
+<main class="desk">
+
+  <!-- 1 -->
+  <section class="col col--list" aria-labelledby="h-list">
+    <div class="col__head">
+      <span class="col__step">STEP 1</span>
+      <h2 id="h-list">영상</h2>
+      <span class="col__meta" id="listMeta">불러오지 않음</span>
+    </div>
+
+    <div class="listbar" id="sieve" hidden>
+      <label class="sieve">
+        <input type="checkbox" id="onlyDating" checked>
+        <span>연애 영상만 <span id="sieveCount"></span></span>
+      </label>
+      <label class="sorter">
+        <span class="sr-only">정렬</span>
+        <select id="sortBy">
+          <option value="date">최신순</option>
+          <option value="views">조회수순</option>
+          <option value="vph">뜨는 순 (시간당 조회)</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="list" id="videoList">
+      <p class="empty">위의 <b>영상 불러오기</b>를 누르면 지정한 채널의 최신 영상이 여기에 쌓입니다.</p>
+    </div>
+
+    <form class="linkbar" id="linkForm">
+      <label for="linkInput">링크로 직접 가져오기</label>
+      <div class="linkbar__row">
+        <input id="linkInput" type="text" placeholder="youtube.com/watch?v=..." autocomplete="off">
+        <button type="submit" class="btn btn--ghost">가져오기</button>
+      </div>
+      <p class="linkbar__msg" id="linkMsg" hidden></p>
+    </form>
+  </section>
+
+  <!-- 2 -->
+  <section class="col col--work" aria-labelledby="h-work">
+    <div class="col__head">
+      <span class="col__step">STEP 2</span>
+      <h2 id="h-work">분석과 초안</h2>
+      <span class="col__meta" id="workMeta">영상을 고르세요</span>
+    </div>
+
+    <div class="work" id="work" hidden>
+      <div class="chosen">
+        <img id="chosenThumb" alt="">
+        <div>
+          <p class="chosen__title" id="chosenTitle"></p>
+          <p class="chosen__sub" id="chosenSub"></p>
+        </div>
+      </div>
+
+      <div class="finding">
+        <p class="finding__label">영상 속 고민 <span class="basis" id="concernBasis" hidden></span></p>
+        <p class="finding__concern" id="concern"></p>
+      </div>
+
+      <blockquote class="quote" id="quoteBox">
+        <span class="quote__time" id="quoteTime"></span>
+        <span class="quote__text" id="quoteText"></span>
+      </blockquote>
+
+      <div class="draft">
+        <div class="draft__head">
+          <label for="draftText">댓글 초안</label>
+          <span class="counter" id="counter">0자</span>
+        </div>
+        <textarea id="draftText" rows="4" spellcheck="false"></textarea>
+        <ul class="checks" id="checks"></ul>
+        <div class="draft__actions">
+          <button class="btn btn--ghost" id="btnRegen">다시 생성</button>
+          <button class="btn btn--ghost" id="btnCopy">초안 복사</button>
+        </div>
+      </div>
+
+      <details class="source" id="sourceBox">
+        <summary>AI가 읽은 자막 <span id="sourceCount"></span></summary>
+        <div class="source__lines" id="sourceLines"></div>
+      </details>
+
+      <details class="source" id="commentsBox">
+        <summary>AI가 읽은 인기 댓글 <span id="commentsCount"></span></summary>
+        <div class="source__lines" id="commentsLines"></div>
+      </details>
+    </div>
+
+    <p class="empty" id="workEmpty">왼쪽에서 영상을 고르면 자막을 읽어 고민을 정리하고 초안을 만듭니다.</p>
+    <p class="loading" id="workLoading" hidden>영상을 분석하는 중…</p>
+  </section>
+
+  <!-- 3 -->
+  <section class="col col--post" aria-labelledby="h-post">
+    <div class="col__head">
+      <span class="col__step">STEP 3</span>
+      <h2 id="h-post">댓글 달기</h2>
+      <span class="col__meta" id="postMeta"></span>
+    </div>
+
+    <div class="post">
+      <label class="field">
+        <span>계정</span>
+        <select id="profileSelect"></select>
+      </label>
+
+      <label class="field">
+        <span>게시 방식</span>
+        <select id="methodSelect">
+          <option value="typing">자동 입력 게시</option>
+          <option value="api">API 바로 게시</option>
+        </select>
+      </label>
+
+      <ol class="steps" id="steps">
+        <li data-step="open">프로필 여는 중</li>
+        <li data-step="post">댓글 게시 중</li>
+        <li data-step="confirm">게시 완료 · 댓글 보기</li>
+        <li data-step="log">기록</li>
+      </ol>
+
+      <button class="btn btn--primary btn--block" id="btnPost" disabled>댓글 달기</button>
+
+      <div class="result" id="result" hidden>
+        <p class="result__state" id="resultState"></p>
+        <p class="result__meta" id="resultMeta"></p>
+      </div>
+
+      <p class="note" id="postNote">버튼을 누르면 프로필 창이 열리고 유튜브 공식 API로 게시합니다.</p>
+    </div>
+
+    <div class="ledger">
+      <div class="ledger__head">
+        <h3>기록</h3>
+        <span id="ledgerCount"></span>
+      </div>
+      <div class="ledger__body" id="ledger">
+        <p class="empty empty--sm">아직 기록이 없습니다.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

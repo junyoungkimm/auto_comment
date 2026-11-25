@@ -1,0 +1,22 @@
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+
+# 비밀 값 — 절대 커밋하지 않는다 (과제 체크리스트 항목)
+.env
+secrets/*
+!secrets/.gitkeep
+
+# 크롬 프로필 폴더 (로그인 세션이 들어있다)
+profiles/
+
+# 실행 기록 · 스크린샷
+data/
+.pytest_cache/
+
+# 브라우저 점검 도구가 남기는 캡처
+.playwright-mcp/
+
+# 과제 안내서 (제이지그룹 문서 — 공개 저장소에 올리지 않는다)
+docs/track-2-marketing-agent.pdf
